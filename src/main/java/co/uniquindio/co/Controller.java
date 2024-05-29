@@ -24,11 +24,33 @@ import co.uniquindio.Logica.VehiculoFactory;
 
 public class Controller {
 
+    private static Controller controller;
+
     @FXML
     private Button cargarImagenButton;
 
     @FXML
     private VBox imagenesContainer;
+
+    public static Controller getController() {
+        return controller;
+    }
+
+    String marca;
+    String modelo;
+    String precio;
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
 
     @FXML
     void cargarImagenButton(ActionEvent event) throws IOException {
@@ -72,20 +94,18 @@ public class Controller {
                     Button comprarButton = new Button("Comprar");
                     double pre = Double.parseDouble(precio);
                     comprarButton.setOnAction(e -> {
-                        RegistrarseController registrarseController = RegistrarseController.getRegistrarseController();
-                        Cliente cliente = registrarseController.getCliente();
-                        VehiculoFactory vehiculoFactory = new VehiculoFactory();
-                        Vehiculo vehiculo = vehiculoFactory.crearVehiculoBuilder("camioneta")
-                                .Marca(marca)
-                                .Modelo(modelo)
-                                .Valor(pre)
-                                .build();
-                        cliente.AgregarvVehiculo(vehiculo);
-
-                        System.out.print(cliente.getVehiculoBuilders().size());
-
+                        try {
+                            Parent root1 = FXMLLoader.load(getClass().getResource("userCompra.fxml"));
+                            Scene scene1 = new Scene(root1);
+                            Stage stage1 = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                            stage1.setScene(scene1);
+                            stage1.setTitle("MENU");
+                            stage1.show();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            // Manejo adicional de errores
+                        }
                     });
-
                     ImageData imageData = new ImageData(file.toURI().toString(), marca, modelo, precio);
                     imageData.setComprarButton(comprarButton);
 
@@ -102,6 +122,7 @@ public class Controller {
 
     @FXML
     private void initialize() {
+        controller = this;
         for (ImageData data : AppStateCarro.getInstance().getImageList()) {
             Image image = new Image(data.getImagePath());
             ImageView imageView = new ImageView(image);

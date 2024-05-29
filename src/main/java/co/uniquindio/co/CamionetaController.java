@@ -12,6 +12,7 @@ import co.uniquindio.Logica.VehiculoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -74,20 +75,18 @@ public class CamionetaController {
                     Label precioLabel = new Label("Precio: " + precio);
                     Button comprarButton = new Button("Comprar");
 
-                    double pre = Double.parseDouble(precio);
-
                     comprarButton.setOnAction(e -> {
-                        RegistrarseController registrarseController = RegistrarseController.getRegistrarseController();
-                        Cliente cliente = registrarseController.getCliente();
-                        VehiculoFactory vehiculoFactory = new VehiculoFactory();
-                        Vehiculo vehiculo = vehiculoFactory.crearVehiculoBuilder("camioneta")
-                                .Marca(marca)
-                                .Modelo(modelo)
-                                .Valor(pre)
-                                .build();
-                        cliente.AgregarvVehiculo(vehiculo);
-
-                        System.out.print(cliente.getVehiculoBuilders().size());
+                        try {
+                            Parent root1 = FXMLLoader.load(getClass().getResource("userCompra.fxml"));
+                            Scene scene1 = new Scene(root1);
+                            Stage stage1 = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                            stage1.setScene(scene1);
+                            stage1.setTitle("MENU");
+                            stage1.show();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            // Manejo adicional de errores
+                        }
                     });
 
                     VBox imageBox = new VBox(imageView, marcaLabel, modeloLabel, precioLabel, comprarButton);

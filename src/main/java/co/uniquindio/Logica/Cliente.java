@@ -14,8 +14,8 @@ public class Cliente extends Persona {
         return vehiculoBuilders;
     }
 
-    public Cliente(String nombre, String apellido, LocalDate date, String id) {
-        super(nombre, apellido, date);
+    public Cliente(String nombre, String apellido, LocalDate date, User user, String id) {
+        super(nombre, apellido, date, user);
 
         this.id = id;
         vehiculoBuilders = new ArrayList<>();
@@ -42,11 +42,6 @@ public class Cliente extends Persona {
 
     public static ClienteBuilder builder() {
         return new ClienteBuilder();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + "Cliente [cargo=" + "ID=" + id + "]";
     }
 
 }

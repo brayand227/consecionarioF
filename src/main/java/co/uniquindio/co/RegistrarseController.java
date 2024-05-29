@@ -15,9 +15,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import co.uniquindio.Logica.Consecionario;
+import co.uniquindio.Logica.User;
 import javafx.scene.control.Alert.AlertType;
 
 public class RegistrarseController implements Initializable {
@@ -42,13 +44,24 @@ public class RegistrarseController implements Initializable {
 
     @FXML
     private TextField Txnombre;
+    @FXML
+    private PasswordField TxContraseña;
+
+    @FXML
+    private PasswordField TxContraseña1;
+
+    @FXML
+    private TextField TxUser;
 
     @FXML
     private Button btregresar;
 
     @FXML
     private Button btsiguiente;
-
+    private String user;
+    private String contraseña;
+    private String contraseña1;
+    private User usuario;
     private String nombre;
     private String apellido;
     private LocalDate localDate;
@@ -96,22 +109,28 @@ public class RegistrarseController implements Initializable {
         apellido = Txapellido.getText();
         localDate = Calendar.getValue();
         id = Txcodigo.getText();
-        cliente1 = Cliente.builder().Apellido(apellido).Date(localDate).Id(id).nombre(nombre).build();
+        user = TxUser.getText();
+        contraseña = TxContraseña.getText();
+        contraseña1 = TxContraseña1.getText();
+        usuario = new User(user, contraseña);
 
-        if (nombre.isEmpty() || apellido.isEmpty() || localDate == null || id.isEmpty()) {
+        if (nombre.isEmpty() || apellido.isEmpty() || localDate == null || id.isEmpty() || user.isEmpty()
+                || contraseña.isEmpty() || contraseña1.isEmpty()) {
             Imprimir("TEXTOS VACIOS", "LOS ESPACIOS SON OBLIGATORIOS");
         } else {
             if (consecionario.validarCliente(cliente1)) {
                 Imprimir("USUARIO REGISTRADO", "EL USUARIO YA EXISTE");
-            } else {
-                consecionario.agregarCliente(nombre, apellido, localDate, id);
+            } else if (contraseña.equals(contraseña1)) {
+                consecionario.agregarCliente(nombre, apellido, localDate, id, usuario);
 
                 Parent root = FXMLLoader.load(getClass().getResource("menuUser.fxml"));
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
-                stage.setTitle("INICIO USUARIO");
+                stage.setTitle("MENU");
                 stage.show();
+            } else {
+                Imprimir("ERROR", "CONTRASEÑAS NO SON IGUALES");
             }
         }
     }

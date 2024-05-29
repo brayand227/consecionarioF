@@ -42,6 +42,7 @@ public class PrincipalVentanaController implements Initializable {
     void Cerrar(ActionEvent event) {
         Stage stage = (Stage) btCerrar.getScene().getWindow();
         stage.close();
+
     }
 
     @FXML
@@ -69,14 +70,14 @@ public class PrincipalVentanaController implements Initializable {
                 stage.show();
 
             } else if (opcion.equals("EMPLEADO")) {
-                Parent root = FXMLLoader.load(getClass().getResource("menuUser.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("empleado.fxml"));
                 Scene scene = new Scene(root);
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                 stage.setScene(scene);
 
-                stage.setTitle("MENU");
+                stage.setTitle("EMPLEADO");
 
                 stage.show();
 
